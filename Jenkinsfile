@@ -20,6 +20,13 @@ pipeline {
 				sh 'npm test'
 			}
 		}
+		stage('Build Docker Image'){
+			steps {
+				script {
+					dockerImage = docker.build("${DOCKER_HUB_REPO}:latest")
+				}
+			}
+		}
 	}
 		
 	post {
