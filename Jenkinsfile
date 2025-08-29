@@ -1,6 +1,7 @@
 pipeline {
 	agent any
 	tools {
+		kubernetes('kubectl') 
 		nodejs 'NodeJS'
 	}
 	environment {
@@ -39,7 +40,7 @@ pipeline {
 		stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    sh "kubectl set image deployment/nodeimage7-deployment nodeimage7-container=${DOCKER_IMAGE}"
+                    sh "kubectl set image deployment/nodeimage7-deployment nodeimage7-container=${env.DOCKER_IMAGE}"
                 }
             }
         }
