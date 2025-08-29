@@ -3,6 +3,9 @@ pipeline {
 	tools {
 		nodejs 'NodeJS'
 	}
+	environment {
+        DOCKER_IMAGE = "shyam2210/nodeimage7:${env.BUILD_NUMBER}"
+    }
 	
 	stages {
 		stage('Checkout Github'){
@@ -20,13 +23,26 @@ pipeline {
 				sh 'npm test'
 			}
 		}
-		stage('Build Docker Image'){
-			steps {
-				script {
-					docker.build("nodeimage"+"$BUILD_NUMBER")
-				}
-			}
-		}
+		stage('Build and Push Docker Image') {
+            steps {
+                script {
+                    // Log in to Docker Hub using the credentials we set up in Jenkins
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub-credentials') {
+                        // Build the image using the DOCKER_IMAGE variable
+                        def customImage = docker.build("${DOCKER_IMAGE}", "--pull .")
+                        // Push the image to the registry
+                        customImage.push()
+                    }
+                }
+            }
+        }
+		stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    sh "kubectl set image deployment/nodeimage7-deployment nodeimage7-container=${DOCKER_IMAGE}"
+                }
+            }
+        }
 	}
 		
 	post {
