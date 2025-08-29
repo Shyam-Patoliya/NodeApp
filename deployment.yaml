@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodeimage7-deployment
+  labels:
+    app: nodeimage7
+spec:
+  replicas: 2 # Specifies the number of Pod replicas
+  selector:
+    matchLabels:
+      app: nodeimage7 # The selector links the Deployment to the Pods with this label
+  template:
+    metadata:
+      labels:
+        app: nodeimage7 # Labels for the Pods created by this Deployment
+    spec:
+      containers:
+        - name: nodeimage7-container
+          image: shyam2210/nodeimage7:latest # The Docker image to be used
+          ports:
+            - containerPort: 3000 # The port your application is listening on inside the container
