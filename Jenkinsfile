@@ -1,7 +1,6 @@
 pipeline {
 	agent any
 	tools {
-		kubernetes('kubectl') 
 		nodejs 'NodeJS'
 	}
 	environment {
