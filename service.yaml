@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nodeimage7-service
+spec:
+  selector:
+    app: nodeimage7 # The selector links this Service to the Pods with this label
+  ports:
+    - protocol: TCP
+      port: 80 # The port the Service will listen on
+      targetPort: 3000 # The port to forward traffic to on the Pods
+  type: LoadBalancer # Exposes the Service to the public internet
