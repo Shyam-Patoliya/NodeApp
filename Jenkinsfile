@@ -37,12 +37,13 @@ pipeline {
             }
         }
 		stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    sh "kubectl set image deployment/nodeimage7-deployment nodeimage7-container=${env.DOCKER_IMAGE}"
-                }
-            }
-        }
+		    steps {
+		        withKubeConfig([credentialsId: 'kubeconfig-cred-id']) {
+		            sh 'kubectl set image deployment/nodeimage7-deployment nodeimage7-container=shyam2210/nodeimage7:29'
+		        }
+		    }
+		}
+
 	}
 		
 	post {
