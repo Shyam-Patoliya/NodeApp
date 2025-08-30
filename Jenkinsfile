@@ -38,7 +38,7 @@ pipeline {
         }
 		stage('Deploy to Kubernetes') {
 		    steps {
-		        withKubeConfig([credentialsId: 'kubeconfig-cred-id']) {
+		        withKubeConfig([credentialsId: 'kubernetes-token-secret']) {
 		            sh 'kubectl set image deployment/nodeimage7-deployment nodeimage7-container=shyam2210/nodeimage7:29'
 		        }
 		    }
